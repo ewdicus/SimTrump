@@ -48,11 +48,13 @@ def main(limit, nocache):
     if not angry_tweets:
         print("No new _angry_ tweets since id: {}".format(last_tweet_id))
 
-    count = 0
-    for tweet in angry_tweets:
-        print("{}: \"{}\"".format(count, tweet.text))
-        make_image(tweet.text, str(count))
-        count += 1
+    tweet = angry_tweets[0]
+    # for tweet in angry_tweets:
+    print("Making image for: \"{}\"".format(tweet.text))
+    image_path = make_image(tweet.text)
+    print("Posting...")
+    twitter.post_image(image_path)
+    print("Done")
 
 if __name__ == "__main__":
     main()
