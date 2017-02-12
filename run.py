@@ -5,7 +5,7 @@ import click
 from twitter import Twitter
 from cache import get_last_tweet_id, set_last_tweet_id
 from google_nlp import Google
-# from image_processing import make_image
+from image_processing import make_image
 
 # Planning to run this once per hour. Doubt he'll spam more than 50 over that
 # length of time. ¯\_(ツ)_/¯
@@ -30,7 +30,7 @@ def main(limit, nocache):
 
     # If there aren't any we're done
     if not new_tweets:
-        print("No new tweets since id:{}".format(last_tweet_id))
+        print("No new tweets since id: {}".format(last_tweet_id))
         return
 
     # Store the new last_tweet_id. Newest first, so it's just the id of the
@@ -45,8 +45,14 @@ def main(limit, nocache):
             angry_tweets.append(tweet)
             # print("\"{}\"\n\t{} / {}".format(tweet.text, score, mag))
 
+    if not angry_tweets:
+        print("No new _angry_ tweets since id: {}".format(last_tweet_id))
+
+    count = 0
     for tweet in angry_tweets:
-        print("\"{}\"".format(tweet.text))
+        print("{}: \"{}\"".format(count, tweet.text))
+        make_image(tweet.text, str(count) + "_smaller")
+        count += 1
 
 if __name__ == "__main__":
     main()
