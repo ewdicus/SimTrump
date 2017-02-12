@@ -1,5 +1,6 @@
 import os
 import re
+import html
 import tweepy
 
 # Environment Variables
@@ -37,6 +38,9 @@ class Twitter():
         # Don't want retweets. Only angry messages from Easy D.
         if tweet.retweeted:
             return None
+
+        # Unescape HTML entities
+        tweet.text = html.unescape(tweet.text)
 
         # Remove URLS
         tweet.text = re.sub(r"http\S+", "", tweet.text)
