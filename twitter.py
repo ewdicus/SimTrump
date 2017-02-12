@@ -46,3 +46,11 @@ class Twitter():
         tweet.text = tweet.text.replace("\r", "")
         tweet.text = tweet.text.strip()
         return tweet
+
+    def post_image(self, image_path):
+        try:
+            # Returns the tweet
+            return self.api.update_with_media(image_path)
+        except TweepError as e:
+            print("Error: {}".format(e.message))
+        return None
