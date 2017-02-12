@@ -42,7 +42,7 @@ def main(limit, nocache, nopost):
     angry_tweets = []
     for tweet in new_tweets:
         score, mag = google.analyze_text_sentiment(tweet.text)
-        if score < ANGER_SCORE_CUTOFF or "SEE YOU IN COURT" in tweet.text:
+        if score < ANGER_SCORE_CUTOFF or "see you in court" in tweet.text.lower():
             angry_tweets.append(tweet)
             # print("\"{}\"\n\t{} / {}".format(tweet.text, score, mag))
 
