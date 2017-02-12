@@ -51,7 +51,7 @@ def main(limit, nocache):
     count = 0
     for tweet in angry_tweets:
         print("{}: \"{}\"".format(count, tweet.text))
-        make_image(tweet.text, str(count) + "_smaller")
+        make_image(tweet.text, str(count))
         count += 1
 
 if __name__ == "__main__":
