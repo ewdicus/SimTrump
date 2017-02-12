@@ -49,6 +49,9 @@ def main(limit, nocache, nopost):
     if not angry_tweets:
         print("No new _angry_ tweets since id: {}".format(last_tweet_id))
 
+    # Before we post them, we need to reverse the order. We get them newest
+    # first but want to post them oldest first so they match the original order
+    angry_tweets.reverse()
     for tweet in angry_tweets:
         if nopost:
             print("Tweet: \"{}\"".format(tweet.text))
