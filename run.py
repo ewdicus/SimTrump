@@ -17,7 +17,8 @@ ANGER_SCORE_CUTOFF = 0
 @click.command()
 @click.option('--limit', default=TWEET_LIMIT, help='number of tweets')
 @click.option('--nocache', is_flag=True, help='disable using the last cached tweet as a starting point')
-def main(limit, nocache):
+@click.option('--nopost', is_flag=True, help='disable posting the images')
+def main(limit, nocache, nopost):
     twitter = Twitter()
     google = Google()
 
@@ -41,20 +42,22 @@ def main(limit, nocache):
     angry_tweets = []
     for tweet in new_tweets:
         score, mag = google.analyze_text_sentiment(tweet.text)
-        if score < ANGER_SCORE_CUTOFF:
+        if score < ANGER_SCORE_CUTOFF or "SEE YOU IN COURT" in tweet.text:
             angry_tweets.append(tweet)
             # print("\"{}\"\n\t{} / {}".format(tweet.text, score, mag))
 
     if not angry_tweets:
         print("No new _angry_ tweets since id: {}".format(last_tweet_id))
 
-    tweet = angry_tweets[0]
-    # for tweet in angry_tweets:
-    print("Making image for: \"{}\"".format(tweet.text))
-    image_path = make_image(tweet.text)
-    print("Posting...")
-    twitter.post_image(image_path)
-    print("Done")
+    for tweet in angry_tweets:
+        if nopost:
+            print("Tweet: \"{}\"".format(tweet.text))
+        else:
+            print("Making image for: \"{}\"".format(tweet.text))
+            image_path = make_image(tweet.text)
+            print("Posting...")
+            twitter.post_image(image_path)
+            print("Done")
 
 if __name__ == "__main__":
     main()
