@@ -1,5 +1,6 @@
 import os
 import json
+import click
 
 from twitter import Twitter
 from google_nlp import Google
@@ -9,15 +10,18 @@ from cache import get_last_tweet_id, set_last_tweet_id
 # length of time. ¯\_(ツ)_/¯
 TWEET_LIMIT = 50
 
-def main():
+@click.command()
+@click.option('--limit', default=TWEET_LIMIT, help='number of tweets')
+@click.option('--nocache', is_flag=True, help='disable using the last cached tweet as a starting point')
+def main(limit, nocache):
     twitter = Twitter()
     google = Google()
 
     # Check if we already have a tweet id to start from
-    last_tweet_id = get_last_tweet_id()
+    last_tweet_id = None if nocache else get_last_tweet_id()
 
     # Grab any new tweets
-    new_tweets = twitter.get_new_trump_tweets(limit=TWEET_LIMIT,
+    new_tweets = twitter.get_new_trump_tweets(limit=limit,
                                               since_id=last_tweet_id)
 
     # If there aren't any we're done
