@@ -5,7 +5,7 @@ google-auth-httplib2==0.0.2
 google-cloud-core==0.22.1
 google-cloud-language==0.22.2
 googleapis-common-protos==1.5.2
-httplib2==0.10.3
+httplib2==0.19.0
 iron-cache==0.3.2
 iron-core==1.2.0
 oauthlib==2.0.1
